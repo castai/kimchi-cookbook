@@ -2,12 +2,12 @@
 # https://github.com/castai/kimchi
 
 name: test
-version: 0.1.0
+version: 0.1.1
 cookbook: kimchi-cookbook
 author: kamil
 description: test
 created_at: "2026-04-05T11:48:27Z"
-updated_at: "2026-04-05T12:20:47Z"
+updated_at: "2026-04-05T12:25:56Z"
 model: kimi-k2.5
 use_case: coding
 tools:
@@ -47,7 +47,7 @@ tools:
         referenced_files:
             - path: get-shit-done/references/user-profiling.md
               content: |
-                # User Profiling: Detection Heuristics Reference
+                # User Profiling: Detection Heuristics Reference (test)
 
                 This reference document defines detection heuristics for behavioral profiling across 8 dimensions. The gsd-user-profiler agent applies these rules when analyzing extracted session messages. Do not invent dimensions or scoring rules beyond what is defined here.
 
