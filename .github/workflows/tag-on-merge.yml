@@ -1,0 +1,33 @@
+name: Tag recipe on merge
+
+on:
+  push:
+    branches: [main]
+    paths: ["recipes/**/*.yaml"]
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # need parent commit to diff
+
+      - name: Tag merged recipes
+        run: |
+          changed=$(git diff --name-only HEAD~1 HEAD -- 'recipes/**/*.yaml')
+          for file in $changed; do
+            [ -f "$file" ] || continue
+            name=$(yq '.name' "$file")
+            version=$(yq '.version' "$file")
+            tag="${name}@${version}"
+            if git rev-parse "$tag" >/dev/null 2>&1; then
+              echo "Tag $tag already exists, skipping"
+              continue
+            fi
+            git tag -a "$tag" -m "$tag"
+            git push origin "$tag"
+            echo "Tagged $tag"
+          done
