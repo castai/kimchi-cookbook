@@ -10,24 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # fetch full history so base branch is available
 
       - name: Verify recipe author matches PR submitter
         env:
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
           AUTHOR_ASSOCIATION: ${{ github.event.pull_request.author_association }}
+          BASE_REF: ${{ github.base_ref }}
         run: |
-          # Org members and collaborators can submit on behalf of others
           if [[ "$AUTHOR_ASSOCIATION" == "MEMBER" || "$AUTHOR_ASSOCIATION" == "COLLABORATOR" || "$AUTHOR_ASSOCIATION" == "OWNER" ]]; then
             echo "Trusted contributor ($AUTHOR_ASSOCIATION), skipping author check"
             exit 0
           fi
 
-          changed=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'recipes/**/*.yaml')
+          changed=$(git diff --name-only "origin/${BASE_REF}...HEAD" -- 'recipes/**/*.yaml')
           failed=0
           for file in $changed; do
             [ -f "$file" ] || continue
             recipe_author=$(yq '.author' "$file")
-            # Case-insensitive match against GitHub login
             if [[ "${recipe_author,,}" != "${PR_AUTHOR,,}" ]]; then
               echo "::error file=$file::Author mismatch: recipe has '$recipe_author' but PR is from '$PR_AUTHOR'"
               failed=1
