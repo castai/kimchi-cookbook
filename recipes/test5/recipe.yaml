@@ -6,12 +6,12 @@ version: 0.1.0
 cookbook: kimchi-cookbook
 author: kamilcast
 description: test5
-created_at: "2026-04-06T12:40:52Z"
-updated_at: "2026-04-06T13:11:36Z"
+created_at: "2026-04-06T13:22:14Z"
+updated_at: "2026-04-06T13:32:24Z"
 forked_from:
-    author: kamil
+    author: kamilcast
     cookbook: kimchi-cookbook
-    version: 0.1.1
+    version: 0.1.0
 model: kimi-k2.5
 use_case: coding
 tools:
